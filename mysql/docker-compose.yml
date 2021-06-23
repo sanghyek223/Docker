@@ -11,13 +11,8 @@ services:
     secrets:
       - mysql_secret
     ports:
-      - "3306:3306"
-    volumes:
-      - "./mysql_data:/var/lib/mysql"
+      - "3307:3306"
 
 secrets:
   mysql_secret:
     file: mysql_secret
-
-volumes:
-  mysql_data:
