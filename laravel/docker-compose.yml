@@ -1,0 +1,27 @@
+###############################################################################
+#                          Generated on phpdocker.io                          #
+###############################################################################
+version: "3.1"
+services:
+
+    # redis:
+    #   image: redis:alpine
+    #   container_name: laravel-redis
+
+    webserver:
+      image: nginx:alpine
+      container_name: laravel-webserver
+      working_dir: /home
+      volumes:
+          - .:/home
+          - ./phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      ports:
+       - "80:80"
+
+    php-fpm:
+      build: phpdocker/php-fpm
+      container_name: laravel-php-fpm
+      working_dir: /home
+      volumes:
+        - .:/home
+        - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
