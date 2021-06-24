@@ -10,11 +10,25 @@ RUN curl -sS https://getcomposer.org/installer | php
 RUN mv composer.phar /usr/bin/composer
 
 # step 3
-RUN apt-get install -y zlib1g-dev && apt-get install -y libzip-dev
-RUN docker-php-ext-install zip
+RUN apt-get update && apt-get install -y \
+libpq-dev \
+procps \
+git \
+zip \
+unzip \
+vim \
+&& pecl install xdebug \
+&& docker-php-ext-install pdo_mysql opcache \
+&& docker-php-ext-enable xdebug
+
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
+&& apt-get install -y nodejs \
+&& npm install -g npm
+
+RUN apt-get clean \
+&& rm -rf /var/lib/apt/lists/*
 
 # step 4 
-RUN composer global require laravel/installer
 RUN ["/bin/bash", "-c", "echo PATH=$PATH:~/.composer/vendor/bin/ >> ~/.bashrc"]
 RUN ["/bin/bash", "-c", "source ~/.bashrc"]
 
