@@ -1,0 +1,30 @@
+version: "3"
+
+services:
+  
+    mariadb:
+      image: mariadb:10.2.10
+      container_name: mariadb
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_secret
+        MYSQL_USER: SH91
+        MYSQL_PASSWORD_FILE: /run/secrets/mariadb_secret
+      secrets:
+        - mariadb_secret
+      ports:
+        - "3307:3306"
+      volumes:
+        - ./mariaDB/data:/var/lib/mysql
+        # - ./mariaDB/conf.d:/etc/mysql/conf.d
+      networks:
+        - mariadb
+        - default
+  
+secrets:
+  mariadb_secret:
+    file: mariadb_secret
+
+networks:
+  mariadb:
+    name: mariadb
