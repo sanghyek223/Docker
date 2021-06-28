@@ -1,26 +1,31 @@
 version: "3"
 
 services:
-  
-    mariadb:
-      image: mariadb:10.2.10
-      container_name: mariadb
+    database:
+      build:
+        context: ./mariaDB
+        dockerfile: ./mariaDB.Dockerfile
+      container_name: mariaDB
       restart: always
+      
       environment:
         MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_secret
-        MYSQL_USER: SH91
+        MYSQL_USER: user
         MYSQL_PASSWORD_FILE: /run/secrets/mariadb_secret
+        TZ: Asia/Seoul
       secrets:
         - mariadb_secret
       ports:
-        - "3307:3306"
+        - "3306:3306"
       volumes:
         - ./mariaDB/data:/var/lib/mysql
-        # - ./mariaDB/conf.d:/etc/mysql/conf.d
+      command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+
       networks:
         - mariadb
-        - default
-  
+    
 secrets:
   mariadb_secret:
     file: mariadb_secret
