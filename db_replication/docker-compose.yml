@@ -1,0 +1,60 @@
+version: "3"
+services:
+  master_db:
+    build:
+      context: ./etc
+      dockerfile: ./master.Dockerfile
+    container_name: master_db
+    # restart: always
+    
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_secret
+      MYSQL_USER: repl_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mariadb_secret
+      TZ: Asia/Seoul
+    secrets:
+      - mariadb_secret
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./master_data:/var/lib/mysql
+      - ./conf/master_conf:/etc/mysql/conf.d
+    command:
+    - --character-set-server=utf8mb4
+    - --collation-server=utf8mb4_unicode_ci
+    networks:
+      - rep_database
+
+
+  slave_db:
+    build:
+      context: ./etc
+      dockerfile: ./slave.Dockerfile
+    container_name: slave_db
+    # restart: always
+    
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_secret
+      MYSQL_USER: repl_user
+      MYSQL_PASSWORD_FILE: /run/secrets/mariadb_secret
+      TZ: Asia/Seoul
+    secrets:
+      - mariadb_secret
+    ports:
+      - "3308:3306"
+    volumes:
+      - ./slave_data:/var/lib/mysql
+      - ./conf/slave_conf:/etc/mysql/conf.d
+    command:
+    - --character-set-server=utf8mb4
+    - --collation-server=utf8mb4_unicode_ci  
+    networks:
+      - rep_database
+  
+secrets:
+  mariadb_secret:
+    file: mariadb_secret
+
+networks:
+  rep_database:
+    name: rep_database

@@ -1,0 +1,18 @@
+[mysqld]
+server_id=2000
+log_bin = mariadb-bin
+log_bin_index = mariadb-bin.index
+binlog_format = ROW
+gtid_strict_mode = 1
+bind_address = 0.0.0.0
+max_connections = 500
+expire_logs_days= 2
+
+[mysql]
+prompt=\H [\d]>\_
+
+[mariadb]
+interactive_timeout=3600
+wait_timeout=120
+lock_wait_timeout=900
+innodb_buffer_pool_size=24800M
