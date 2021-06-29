@@ -1,13 +1,3 @@
-# dina Server image
-docker pull gonylabsoft/dina
-
-
-docker run --privileged --name dina -v /sys/fs/cgroup:/sys/fs/cgroup:ro -v D:\source\digitalnow:/home/rvsystem/dev.digitalnow.co.kr -v D:\source\digitalnow:/home/rvsystem/dev.hotel.digitalnow.co.kr -p 21:21 -p 22:22 -p 80:80 -p 443:443 -d  gonylabsoft/dina
-
-docker network connect {network이름} {컨테이너명}
-
-
-
 # MariaDB 설치
 docker-compose up -d
 
@@ -68,8 +58,6 @@ mysql -uroot -p
 
 # Slave replication 걸기
 Grant replication slave, replication client on *.* to {userID}@'%' identified by '{PW}';
-Grant replication slave, replication client on *.* to repl_user@'%' identified by 'anrgid12#$';
-
 
 # masterDB 정보 변경
 change master to master_host='{host정보 (여기선 마스터 도커DB 컨테이너이름)}',
@@ -81,10 +69,10 @@ master_log_pos={master position 값};
 
 ###################################################################
 ex)
-change master to master_host='dina_master',
+change master to master_host='master_db',
 master_port=3306,
 master_user='repl_user',
-master_password='anrgid12#$',
+master_password='123123',
 master_log_file='mariadb-bin.000003',
 master_log_pos=344;
 ###################################################################
