@@ -5,7 +5,7 @@ RUN yum -y update; yum clean all
 # ADD the ngix and PHP dependent repository
 COPY nginx/nginx.repo /etc/yum.repos.d/nginx.repo
 
-# Installing nginx 
+# Installing nginx git
 RUN yum -y install nginx git
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
@@ -19,7 +19,7 @@ RUN yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 RUN yum-config-manager --disable remi-php54
 RUN yum-config-manager --enable remi-php74
 RUN yum -y install php-fpm
-RUN yum -y install php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo
+RUN yum -y install php php-mcrypt php-cli php-gd php-curl php-mysql php-ldap php-zip php-fileinfo php-mbstring php-xml
 
 # PHP System
 RUN systemctl enable php-fpm
