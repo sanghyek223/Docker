@@ -41,6 +41,6 @@ RUN yum -y update git
 EXPOSE 80
 
 # Workdirectory
-WORKDIR /home/project
+WORKDIR /home
 
 CMD ["/usr/sbin/init"]
