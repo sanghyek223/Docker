@@ -21,12 +21,8 @@ RUN apt-get update && apt-get install -y \
     && docker-php-ext-install pdo_mysql opcache \
     && docker-php-ext-enable xdebug
 
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
-    && apt-get install -y nodejs \
-    && npm install -g npm
-
-RUN git config --global user.name "{name}"
-RUN git config --global user.email "{email}"
+RUN git config --global user.name "sanghyek"
+RUN git config --global user.email "hyek223@kakao.com"
 
 RUN apt-get clean \
     && rm -rf /var/lib/apt/lists/*
