@@ -12,14 +12,8 @@ services:
       volumes:
           - .:/home
           - ./nginx/www.conf:/etc/nginx/conf.d/www.conf
-          - ./nginx/new.conf:/etc/nginx/conf.d/default.conf
-          - ./nginx/newadmin.conf:/etc/nginx/conf.d/newadmin.conf
-          - ./nginx/www_admin.conf:/etc/nginx/conf.d/www_admin.conf
       ports:
        - "80:80"
-       - "8088:8088"
-       - "9090:9090"
-       - "9088:9088"
 
     php-fpm:
       build: php-fpm

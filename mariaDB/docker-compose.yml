@@ -10,7 +10,7 @@ services:
       
       environment:
         MYSQL_ROOT_PASSWORD_FILE: /run/secrets/mariadb_secret
-        MYSQL_USER: user
+        MYSQL_USER: gonylab
         MYSQL_PASSWORD_FILE: /run/secrets/mariadb_secret
         TZ: Asia/Seoul
       secrets:
