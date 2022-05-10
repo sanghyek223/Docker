@@ -1,7 +1,7 @@
 # Docker build
 
-docker build . -t dinaubuntu
-docker run --privileged -it -d --name dinaubuntu -e TZ=Asia/Seoul -p 21:21 -p 22:22 -p 80:80 -p 443:443 -p 30306:3306 dinaubuntu:latest init
+docker build . -t UbuntuTest
+docker run --privileged -it -d --name UbuntuTest -e TZ=Asia/Seoul -p 21:21 -p 22:22 -p 80:80 -p 443:443 -p 30306:3306 UbuntuTest:latest init
 
 
 #docker container connect
@@ -54,7 +54,7 @@ service mysql start
 
 mysql -u root -p {초기비밀번호 없음}
 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'elwlxjf!';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{password}!';
 
 
 
@@ -71,18 +71,18 @@ PermitRootLogin yes (설정변경)
 
 service ssh restart
 
-adduser gonylab
-su gonylab
+adduser test
+su test
 
-ssh-keygen -t rsa {gonylab user로 접속}
+ssh-keygen -t rsa {test user로 접속}
 
 cd .ssh
 
 cat id_rsa.pub {key gitlab 에 등록}
 
 
-git config --global user.name "sanghyek"
-git config --global user.email "hyek223@kakao.com"
+git config --global user.name "{name}"
+git config --global user.email "{email}"
 git config -l
 
 git clone {file}

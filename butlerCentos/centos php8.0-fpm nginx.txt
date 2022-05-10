@@ -66,7 +66,7 @@ yum -y update
 #ssh login open
 vi /etc/ssh/sshd_config
 ...
-AllowUsers gonylab root <-- ADD
+AllowUsers test root <-- ADD
 Port 22
 ...
 PermitRootLogin yes
@@ -161,21 +161,21 @@ anrgid0916!@
 
 
 #useradd 
-useradd gonylab
-passwd gonylab
+useradd test
+passwd test
 anrgid0916!@
 anrgid0916!@
 
 
 
-#gonylab ssh login & git setting
-su gonylab
+#test ssh login & git setting
+su test
 
 git config --global user.name "sanghyek"
 git config --global user.email "hyek223@kakao.com"
 git config -l
 
-cd /home/gonylab/
+cd /home/test/
 ssh-keygen -t rsa
 ENTER X 3
 
@@ -186,9 +186,9 @@ cat .ssh/id_rsa.pub
 
 
 
-#gonylab foder permitsion
+#test foder permitsion
 cd /home/
-chmod -R 755 gonylab
+chmod -R 755 test
 chmod 400 ~/.ssh/id_rsa {key permitsion = 400}
 
 
@@ -206,9 +206,9 @@ git clone {copy url}
 #laravel error
 아래와 같은 error 가 노출된다면
 
-The stream or file "/home/gonylab/www/storage/logs/laravel.log" could not be opened in append mode: Failed to open stream: Permission denied
+The stream or file "/home/test/www/storage/logs/laravel.log" could not be opened in append mode: Failed to open stream: Permission denied
 
-cd /home/gonylab/{project folder}
+cd /home/test/{project folder}
 chmod -R ugo+rw storage
 
 
@@ -218,5 +218,5 @@ chmod -R ugo+rw storage
 
 CodeIgniter\Cache\Exceptions\CacheException
 
-cd /home/gonylab/{project folder}
+cd /home/test/{project folder}
 chmod 777 -R writable

@@ -54,7 +54,7 @@ service mysql start
 
 mysql -u root -p {초기비밀번호 없음}
 
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'elwlxjf!';
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '{password}';
 
 
 
@@ -71,10 +71,10 @@ PermitRootLogin yes (설정변경)
 
 service ssh restart
 
-adduser gonylab
-su gonylab
+adduser test
+su test
 
-ssh-keygen -t rsa {gonylab user로 접속}
+ssh-keygen -t rsa {test user로 접속}
 
 cd .ssh
 
