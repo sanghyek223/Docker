@@ -1,0 +1,222 @@
+#docker centos 7 install
+
+docker pull centos:7
+docker run --privileged -it -d --name butlerloungeCentos -p 21:21 -p 22:22 -p 80:80 -p 8088:8088 -p 8089:8089 -p 3306:3306 -p 443:443 centos:7 init
+
+
+
+#docker container connect
+docker ps
+docker exec -it [containerID] /bin/bash
+
+
+
+#init install
+yum -y update
+yum install -y git rdate openssl firewalld openssh-server openssh-clients openssh-askpass net-tools vsftpd mod_ssl epel-release cronie deltarpm
+
+
+
+#시간정보 동기화
+rdate -s time.bora.net
+
+
+
+#php-fpm install
+yum -y install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum -y install yum-utils
+yum-config-manager --enable remi-php80
+yum -y install php php-cli php-fpm php-mysqlnd php-mysql php-mysqli php-devel php-zip php-gd php-curl php-xml php-json php-intl php-mbstring php-mcrypt php-posix php-shmop php-soap php-sysvmsg php-sysvsem php-sysvshm php-xmlrpc php-opcache
+
+
+
+#composer install
+curl -sS https://getcomposer.org/installer | php
+mv composer.phar /usr/bin/composer
+
+
+
+#nginx install
+cd /etc/yum.repos.d/
+vi nginx.repo {아래 내용 추가}
+
+##############################################################
+
+[nginx] 
+name=nginx repo 
+baseurl=http://nginx.org/packages/centos/7/$basearch/ 
+gpgcheck=0 
+enabled=1
+
+##############################################################
+
+yum -y install nginx
+
+
+
+#mariadb install
+yum -y install mariadb-server mariadb
+
+
+
+#yum update all
+yum -y update
+
+
+#ssh login open
+vi /etc/ssh/sshd_config
+...
+AllowUsers gonylab root <-- ADD
+Port 22
+...
+PermitRootLogin yes
+...
+
+
+
+#start & enable
+systemctl restart sshd
+systemctl enable sshd
+
+systemctl start nginx
+systemctl enable nginx
+
+systemctl start php-fpm
+systemctl enable php-fpm
+
+systemctl start vsftpd
+systemctl enable vsftpd
+
+
+
+#Nginx php setting
+vi /etc/php.ini {php.ini 파일로 수정}
+vi /etc/php-fpm.d/www.conf {www.conf 파일로 수정}
+
+www.conf  수정 내역
+#########################################################
+
+;user = apache //변경전 
+ser = nginx 
+
+;group = apache//변경전 
+group = nginx 
+
+;listen.owner = nobody //변경전 
+listen.owner = nginx 
+
+;listen.group = nobody //변경전 
+listen.owner = nginx 
+
+;listen.mode = 0660 //변경전 
+listen.mode = 0660 
+
+;listen = 127.0.0.1:9000 //변경전 
+isten = /var/run/php-fpm/php-fpm.sock 
+
+;pm.max_children = 50 //변경전 
+pm.max_children = 130 
+
+;pm.start_servers = 5 //변경전 
+pm.start_servers = 30 
+
+;pm.min_spare_servers = 5 //변경전 
+pm.min_spare_servers = 30 
+
+pm.max_spare_servers = 35 //변경전 
+pm.max_spare_servers = 100 
+
+;pm.max_requests = 500 //변경전 
+pm.max_requests = 500
+
+#########################################################
+
+vi /etc/nginx/conf.d/default.conf {default.conf 파일로 수정}
+
+systemctl restart nginx
+systemctl restart php-fpm
+
+
+
+#php JIT 활성화
+vi /etc/php-zts.d/10-opcache.ini {10-opcache 파일로 수정}
+
+10-opcache 수정 내역
+#####################################
+
+opcache.enable=1 
+opcache.jit_buffer_size=100M 
+opcache.jit=tracing
+
+#####################################
+
+systemctl restart php-fpm
+
+
+#root passwd 
+passwd
+anrgid0916!@
+anrgid0916!@
+
+
+
+#useradd 
+useradd gonylab
+passwd gonylab
+anrgid0916!@
+anrgid0916!@
+
+
+
+#gonylab ssh login & git setting
+su gonylab
+
+git config --global user.name "sanghyek"
+git config --global user.email "hyek223@kakao.com"
+git config -l
+
+cd /home/gonylab/
+ssh-keygen -t rsa
+ENTER X 3
+
+
+
+#add gitlab ssh public key
+cat .ssh/id_rsa.pub
+
+
+
+#gonylab foder permitsion
+cd /home/
+chmod -R 755 gonylab
+chmod 400 ~/.ssh/id_rsa {key permitsion = 400}
+
+
+
+#gitlab add ssh key 
+gitlab 에 ssh key 등록
+
+
+
+#git clone
+git clone {copy url}
+
+
+
+#laravel error
+아래와 같은 error 가 노출된다면
+
+The stream or file "/home/gonylab/www/storage/logs/laravel.log" could not be opened in append mode: Failed to open stream: Permission denied
+
+cd /home/gonylab/{project folder}
+chmod -R ugo+rw storage
+
+
+
+#CI4 error
+아래와 같은 error 가 노출된다면
+
+CodeIgniter\Cache\Exceptions\CacheException
+
+cd /home/gonylab/{project folder}
+chmod 777 -R writable

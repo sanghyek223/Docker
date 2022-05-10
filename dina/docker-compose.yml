@@ -1,0 +1,13 @@
+version: "3.1"
+services:
+
+    digitalnow:
+      image: plutonianbe/php54-apache
+      container_name: digitalnow-php54-apache
+      working_dir: /home
+      volumes:
+        - D:\source\digitalnow:/home/digitalnow
+        - ./httpd/apache2.conf:/etc/apache2/apache2.conf
+        - ./httpd/dir.conf:/etc/apache2/mods-enabled/dir.conf
+      ports:
+       - "80:80"
