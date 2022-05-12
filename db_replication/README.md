@@ -42,7 +42,7 @@ SHOW VARIABLES LIKE '%expire_logs_days%';
 set global expire_logs_days=2;
 ~~~
 #
-# Slave ON
+### Slave ON
 ~~~mysql
 GRANT REPLICATION SLAVE ON *.* TO repl_user@'%';
 FLUSH PRIVILEGES;
